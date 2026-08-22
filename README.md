@@ -1,4 +1,26 @@
-# React + TypeScript + Vite
+# whereisREMI
+
+The public Vite app reads `public/location-history.json`. GitHub Actions can refresh that file from SmartThings without exposing the SmartThings token to the browser.
+
+## Local SmartThings sync
+
+PowerShell:
+
+```powershell
+$env:SMARTTHINGS_TOKEN = 'your-personal-access-token'
+$env:SMARTTHINGS_LOCATION_ID = 'your-location-id'
+$env:SMARTTHINGS_HISTORY_URL = 'https://api.smartthings.com/v1/history/devices?locationId=your-location-id'
+npm run sync-history
+npm run dev
+```
+
+`SMARTTHINGS_HISTORY_URL` is optional and lets you use the exact history URL provided by your approved SmartThings integration. Tokens must only be passed as environment variables or GitHub Actions secrets.
+
+## GitHub Actions setup
+
+Add `SMARTTHINGS_TOKEN` and `SMARTTHINGS_LOCATION_ID` as repository Actions secrets. Add `SMARTTHINGS_HISTORY_URL` too if the default history URL is not the one provided by SmartThings. Then run **Actions > Sync SmartThings history > Run workflow**. The workflow in `.github/workflows/sync-history.yml` updates the public JSON every 15 minutes.
+
+Location history written to `public/` is public. Remove exact addresses or reduce coordinate precision before publishing if the site is public.
 
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 

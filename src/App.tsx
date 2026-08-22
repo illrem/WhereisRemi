@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import './App.css'
 
 type Device = { id: string; name: string; kind: string; color: string; icon: string }
-type Point = { x: number; y: number; time: string; place: string; device: string; address: string; accuracy: string }
+type Point = { x: number; y: number; time: string; place: string; device: string; deviceId?: string; address: string; accuracy: string }
 
 const devices: Device[] = [
   { id: 'phone', name: 'Galaxy S24 Ultra', kind: 'Phone', color: '#ff765b', icon: '▣' },
@@ -36,12 +36,29 @@ function App() {
   const [isPlaying, setIsPlaying] = useState(false)
   const [isSyncing, setIsSyncing] = useState(false)
   const [lastSynced, setLastSynced] = useState('Today, 9:14 AM')
+  const [historyPoints, setHistoryPoints] = useState<Point[]>(points)
+  const [historyError, setHistoryError] = useState('')
+
+  useEffect(() => {
+    fetch('./location-history.json', { cache: 'no-store' })
+      .then((response) => {
+        if (response.status === 404) return null
+        if (!response.ok) throw new Error(`History request failed (${response.status})`)
+        return response.json() as Promise<{ points?: Point[]; syncedAt?: string }>
+      })
+      .then((data) => {
+        if (!data?.points?.length) return
+        setHistoryPoints(data.points)
+        if (data.syncedAt) setLastSynced(new Date(data.syncedAt).toLocaleString())
+      })
+      .catch((error: Error) => setHistoryError(error.message))
+  }, [])
 
   useEffect(() => {
     if (!isPlaying) return
-    const timer = window.setInterval(() => setSelectedPoint((point) => (point + 1) % points.length), 1100)
+    const timer = window.setInterval(() => setSelectedPoint((point) => (point + 1) % historyPoints.length), 1100)
     return () => window.clearInterval(timer)
-  }, [isPlaying])
+  }, [isPlaying, historyPoints.length])
 
   useEffect(() => {
     const onHashChange = () => setIsSetupRoute(window.location.hash === '#/setup')
@@ -53,7 +70,7 @@ function App() {
 
   const toggleDevice = (id: string) => setActiveDevices((current) => current.includes(id) ? current.filter((deviceId) => deviceId !== id) : [...current, id])
   const refresh = () => { setIsSyncing(true); window.setTimeout(() => { setIsSyncing(false); setLastSynced('Just now') }, 900) }
-  const visiblePoints = points.filter((point) => { const device = devices.find((item) => item.name === point.device); return device && activeDevices.includes(device.id) })
+  const visiblePoints = historyPoints.filter((point) => { const device = devices.find((item) => item.id === point.deviceId || item.name === point.device); return device && activeDevices.includes(device.id) })
 
   const openSetup = () => { window.location.hash = '#/setup' }
   const unlockOwner = (code: string) => {
@@ -81,8 +98,8 @@ function App() {
         </aside>
         <section className="main-panel">
           <div className="content-header"><div><div className="kicker">EXPLORING</div><h2>Seattle, WA <span className="chevron">⌄</span></h2></div><div className="range-tabs">{['Day', 'Week', 'Month', 'Year'].map((range) => <button key={range} className={activeRange === range ? 'selected' : ''} onClick={() => setActiveRange(range)}>{range}</button>)}</div></div>
-          <div className="map-card"><div className="map-toolbar"><span className="map-label"><span className="map-pin">●</span> {visiblePoints.length} points <span className="muted">· {activeDevices.length} devices</span></span><div className="map-actions"><button aria-label="Zoom in">+</button><button aria-label="Zoom out">−</button><button aria-label="Center map">◎</button></div></div><div className="map-canvas"><div className="map-water"></div><div className="map-neighborhood n-one">BALLARD</div><div className="map-neighborhood n-two">FREMONT</div><div className="map-neighborhood n-three">CAPITOL HILL</div><div className="map-neighborhood n-four">DOWNTOWN</div><svg className="route-map" viewBox="0 0 100 100" preserveAspectRatio="none" aria-label="Location history route"><path className="route-shadow" d="M28 63 C30 55, 37 55, 45 49 S47 58, 51 60 S56 48, 62 42 S70 46, 74 48 S78 37, 81 33 S77 52, 68 68" /><path className="route-line" d="M28 63 C30 55, 37 55, 45 49 S47 58, 51 60 S56 48, 62 42 S70 46, 74 48 S78 37, 81 33 S77 52, 68 68" /></svg>{points.map((point, index) => <button key={`${point.time}-${point.place}`} className={`map-point ${selectedPoint === index ? 'point-selected' : ''} ${visiblePoints.includes(point) ? '' : 'point-hidden'}`} style={{ left: `${point.x}%`, top: `${point.y}%` }} onClick={() => setSelectedPoint(index)} aria-label={`${point.place} at ${point.time}`}><span></span>{selectedPoint === index && <span className="point-tooltip"><b>{point.place}</b><small>{point.time} · {point.device}</small></span>}</button>)}<div className="map-compass">N<br /><span>↑</span></div><div className="map-scale">1 km</div></div></div>
-          <div className="timeline-panel"><div className="timeline-heading"><div><span className="kicker">TIMELINE</span><strong>{activeRange === 'Week' ? 'Aug 18 — Aug 24, 2025' : `${activeRange} view`}</strong></div><button className={`play-button ${isPlaying ? 'playing' : ''}`} onClick={() => setIsPlaying(!isPlaying)} aria-label={isPlaying ? 'Pause timeline' : 'Play timeline'}>{isPlaying ? 'Ⅱ' : '▶'}</button></div><div className="timeline"><div className="timeline-line"></div>{points.map((point, index) => <button key={point.time} className={`timeline-stop ${selectedPoint === index ? 'active' : ''}`} style={{ left: `${(index / (points.length - 1)) * 100}%` }} onClick={() => setSelectedPoint(index)}><span></span><small>{point.time}</small></button>)}</div><div className="timeline-days"><span>MON 18</span><span>WED 20</span><span>FRI 22</span><span>SUN 24</span></div></div>
+          <div className="map-card"><div className="map-toolbar"><span className="map-label"><span className="map-pin">●</span> {visiblePoints.length} points <span className="muted">· {activeDevices.length} devices</span></span><div className="map-actions"><button aria-label="Zoom in">+</button><button aria-label="Zoom out">−</button><button aria-label="Center map">◎</button></div></div><div className="map-canvas"><div className="map-water"></div><div className="map-neighborhood n-one">BALLARD</div><div className="map-neighborhood n-two">FREMONT</div><div className="map-neighborhood n-three">CAPITOL HILL</div><div className="map-neighborhood n-four">DOWNTOWN</div><svg className="route-map" viewBox="0 0 100 100" preserveAspectRatio="none" aria-label="Location history route"><path className="route-shadow" d="M28 63 C30 55, 37 55, 45 49 S47 58, 51 60 S56 48, 62 42 S70 46, 74 48 S78 37, 81 33 S77 52, 68 68" /><path className="route-line" d="M28 63 C30 55, 37 55, 45 49 S47 58, 51 60 S56 48, 62 42 S70 46, 74 48 S78 37, 81 33 S77 52, 68 68" /></svg>{historyPoints.map((point, index) => <button key={`${point.time}-${point.place}`} className={`map-point ${selectedPoint === index ? 'point-selected' : ''} ${visiblePoints.includes(point) ? '' : 'point-hidden'}`} style={{ left: `${point.x}%`, top: `${point.y}%` }} onClick={() => setSelectedPoint(index)} aria-label={`${point.place} at ${point.time}`}><span></span>{selectedPoint === index && <span className="point-tooltip"><b>{point.place}</b><small>{point.time} · {point.device}</small></span>}</button>)}<div className="map-compass">N<br /><span>↑</span></div><div className="map-scale">1 km</div></div></div>
+          <div className="timeline-panel"><div className="timeline-heading"><div><span className="kicker">TIMELINE</span><strong>{activeRange === 'Week' ? 'Aug 18 — Aug 24, 2025' : `${activeRange} view`}</strong></div><button className={`play-button ${isPlaying ? 'playing' : ''}`} onClick={() => setIsPlaying(!isPlaying)} aria-label={isPlaying ? 'Pause timeline' : 'Play timeline'}>{isPlaying ? 'Ⅱ' : '▶'}</button></div>{historyError && <div className="history-error">Demo history shown. {historyError}</div>}<div className="timeline"><div className="timeline-line"></div>{historyPoints.map((point, index) => <button key={point.time} className={`timeline-stop ${selectedPoint === index ? 'active' : ''}`} style={{ left: `${(index / Math.max(historyPoints.length - 1, 1)) * 100}%` }} onClick={() => setSelectedPoint(index)}><span></span><small>{point.time}</small></button>)}</div><div className="timeline-days"><span>MON 18</span><span>WED 20</span><span>FRI 22</span><span>SUN 24</span></div></div>
           <div className="bottom-grid"><section><div className="kicker">PLACES DETECTED</div><h3>Your regulars</h3><div className="places"><div className="place-item"><span className="place-dot home"></span><span><b>Home</b><small>12h 48m · 3 visits</small></span><button aria-label="Edit Home label">···</button></div><div className="place-item"><span className="place-dot work"></span><span><b>Northline Coffee</b><small>1h 16m · 4 visits</small></span><button aria-label="Edit Northline Coffee label">···</button></div></div></section><section className="day-summary"><div className="kicker">THIS WEEK</div><strong>42.8 <small>km traveled</small></strong><div className="summary-bar"><span></span></div><p>Across 8 places <span>↗ +12%</span></p></section></div>
         </section>
       </div>
