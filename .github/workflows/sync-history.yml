@@ -24,6 +24,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Validate SmartThings configuration
+        env:
+          SMARTTHINGS_TOKEN: ${{ secrets.SMARTTHINGS_TOKEN }}
+          SMARTTHINGS_LOCATION_ID: ${{ secrets.SMARTTHINGS_LOCATION_ID }}
+        run: |
+          test -n "$SMARTTHINGS_TOKEN" || { echo "SMARTTHINGS_TOKEN secret is missing"; exit 1; }
+          test -n "$SMARTTHINGS_LOCATION_ID" || { echo "SMARTTHINGS_LOCATION_ID secret is missing"; exit 1; }
+          test "$SMARTTHINGS_LOCATION_ID" != "YOUR_LOCATION_ID" || { echo "SMARTTHINGS_LOCATION_ID still contains YOUR_LOCATION_ID"; exit 1; }
+
       - name: Fetch SmartThings history
         run: npm run sync-history
         env:

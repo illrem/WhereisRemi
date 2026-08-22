@@ -22,6 +22,8 @@ Add `SMARTTHINGS_TOKEN` and `SMARTTHINGS_LOCATION_ID` as repository Actions secr
 
 Location history written to `public/` is public. Remove exact addresses or reduce coordinate precision before publishing if the site is public.
 
+If the workflow fails, open the failed **Validate SmartThings configuration** or **Fetch SmartThings history** step. A `401` usually means the token is invalid or expired, a `403` means the token does not have the required history permission, and a `404` means the history URL is not available for your SmartThings integration. In the last two cases, set `SMARTTHINGS_HISTORY_URL` to the exact approved endpoint or use SmartThings OAuth instead of a personal token.
+
 This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
 
 Currently, two official plugins are available:

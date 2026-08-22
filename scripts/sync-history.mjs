@@ -5,11 +5,14 @@ const locationId = process.env.SMARTTHINGS_LOCATION_ID
 const apiBase = process.env.SMARTTHINGS_API_BASE || 'https://api.smartthings.com/v1'
 const historyUrl = process.env.SMARTTHINGS_HISTORY_URL || `${apiBase}/history/devices?locationId=${encodeURIComponent(locationId)}`
 
-if (!token) throw new Error('SMARTTHINGS_TOKEN is required')
-if (!locationId) throw new Error('SMARTTHINGS_LOCATION_ID is required')
+if (!token) throw new Error('SMARTTHINGS_TOKEN is required. Add it under repository Settings > Secrets and variables > Actions.')
+if (!locationId || locationId === 'YOUR_LOCATION_ID') throw new Error('SMARTTHINGS_LOCATION_ID is missing or still uses the placeholder YOUR_LOCATION_ID.')
 
 const response = await fetch(historyUrl, { headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' } })
-if (!response.ok) throw new Error(`SmartThings history request failed: ${response.status} ${response.statusText}`)
+if (!response.ok) {
+  const body = (await response.text()).replace(/Bearer\s+[^\s]+/gi, 'Bearer [redacted]').slice(0, 500)
+  throw new Error(`SmartThings history request failed: ${response.status} ${response.statusText}. Response: ${body || '[empty response]'}`)
+}
 
 const payload = await response.json()
 const records = collectRecords(payload)
