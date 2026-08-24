@@ -5,3 +5,5 @@ dist/
 secrets/*
 !secrets/README.md
 !secrets/location.test.example.json
+public/location-history.json
+public/location-notes.json
