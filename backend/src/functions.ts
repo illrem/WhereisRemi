@@ -31,11 +31,36 @@ function authorized(request: HttpRequest, expected: string | undefined, basicUse
 function json(body: unknown, status = 200): HttpResponseInit { return { status, jsonBody: body, headers: { 'Cache-Control': 'no-store' } } }
 function isUK(country: string | undefined) { return /^(gb|uk|united kingdom|england|scotland|wales|northern ireland)$/i.test(country || '') }
 function roundKm(value: number) { return Math.round(value * 100) / 100 }
+const duplicateWindowMs = 12 * 60 * 60 * 1000
+const duplicateCoordinateDelta = 0.01
+
+async function latestLocation() {
+  let latest: LocationEntity | undefined
+  for await (const entity of client.listEntities<LocationEntity>({ queryOptions: { filter: "PartitionKey eq 'location'" } })) {
+    if (!latest || Date.parse(entity.timestamp) > Date.parse(latest.timestamp)) latest = entity
+  }
+  return latest
+}
+
+function isRecentNearbyLocation(location: LocationEntity | undefined, latitude: number, longitude: number) {
+  if (!location) return false
+  const age = Date.now() - Date.parse(location.timestamp)
+  const isRecent = age >= 0 && age < duplicateWindowMs
+  const isNearby = Math.abs(location.latitude - latitude) <= duplicateCoordinateDelta &&
+    Math.abs(location.longitude - longitude) <= duplicateCoordinateDelta
+  return isRecent && isNearby
+}
 
 async function reverseGeocode(latitude: number, longitude: number) {
   const key = process.env.AZURE_MAPS_KEY
   if (!key) return {}
-  const response = await fetch(`https://atlas.microsoft.com/search/address/reverse/json?api-version=1.0&query=${latitude},${longitude}&subscription-key=${encodeURIComponent(key)}`)
+  const params = new URLSearchParams({
+    'api-version': '1.0',
+    query: `${latitude},${longitude}`,
+    language: 'en-GB',
+    'subscription-key': key,
+  })
+  const response = await fetch(`https://atlas.microsoft.com/search/address/reverse/json?${params}`)
   if (!response.ok) return {}
   const result = await response.json() as { addresses?: Array<{ address?: { municipality?: string; countryCode?: string } }> }
   const address = result.addresses?.[0]?.address
@@ -62,6 +87,11 @@ async function receive(request: HttpRequest, context: InvocationContext): Promis
     return json([], 200)
   }
   if (!Number.isFinite(body.lat) || !Number.isFinite(body.lon)) return json({ error: 'lat and lon are required.' }, 400)
+  await client.createTable()
+  if (isRecentNearbyLocation(await latestLocation(), body.lat!, body.lon!)) {
+    context.log('Ignoring recent nearby OwnTracks location.')
+    return json([], 200)
+  }
   const timestamp = new Date((body.tst || Math.floor(Date.now() / 1000)) * 1000).toISOString()
   const geocode = await reverseGeocode(body.lat!, body.lon!)
   const entity: LocationEntity = {
@@ -69,7 +99,6 @@ async function receive(request: HttpRequest, context: InvocationContext): Promis
     timestamp, latitude: roundKm(body.lat!), longitude: roundKm(body.lon!), accuracy: body.acc, tracker: body.tid, battery: body.batt,
     city: isUK(geocode.country) ? undefined : geocode.city, country: isUK(geocode.country) ? 'UK' : geocode.country,
   }
-  await client.createTable()
   await client.upsertEntity(entity, 'Replace')
   context.log(`Stored OwnTracks point ${timestamp}`)
   return json([], 200)

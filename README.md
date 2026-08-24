@@ -11,6 +11,8 @@ A privacy-aware GitHub Pages location journal. The site reads `public/location-h
 
 The Function stores location points in Azure Table Storage and rounds coordinates before export. Azure Maps supplies city/country names when configured; UK results use `UK` as the country while retaining the city name when available. Keep `OWNTRACKS_TOKEN` and `EXPORT_TOKEN` different, long, and random.
 
+The ingest endpoint ignores a location when the newest stored point is less than 12 hours old and both coordinates are within `0.01` degrees. This prevents repeated nearby updates while still accepting meaningful movement or a later location.
+
 ## Setup
 
 1. Add repository Actions secrets named `SMARTTHINGS_TOKEN` and `SMARTTHINGS_LOCATION_ID`. Add `SMARTTHINGS_HISTORY_URL` only when your approved SmartThings integration uses a different endpoint.

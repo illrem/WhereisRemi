@@ -5,6 +5,9 @@ on:
     - cron: '*/15 * * * *'
 permissions:
   contents: write
+concurrency:
+  group: sync-azure
+  cancel-in-progress: false
 jobs:
   sync:
     runs-on: ubuntu-latest
@@ -13,6 +16,8 @@ jobs:
       - uses: actions/setup-node@v5
         with: { node-version: 24, cache: npm }
       - run: npm ci
+      - name: Synchronize repository
+        run: git pull --rebase origin main
       - name: Export sanitized locations
         run: npm run sync-azure
         env:
@@ -23,5 +28,9 @@ jobs:
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
           git add public/location-history.json
-          git diff --cached --quiet || git commit -m 'Update location history'
-          git push
+          if git diff --cached --quiet; then
+            echo 'Location history is already up to date.'
+            exit 0
+          fi
+          git commit -m 'Update location history'
+          git push origin HEAD:main
