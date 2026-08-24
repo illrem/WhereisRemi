@@ -59,7 +59,7 @@ async function receive(request: HttpRequest, context: InvocationContext): Promis
   }
   if (body._type && body._type !== 'location') {
     context.log(`Ignoring OwnTracks ${body._type} event; only location events are stored.`)
-    return json({ ok: true, ignored: body._type }, 202)
+    return json([], 200)
   }
   if (!Number.isFinite(body.lat) || !Number.isFinite(body.lon)) return json({ error: 'lat and lon are required.' }, 400)
   const timestamp = new Date((body.tst || Math.floor(Date.now() / 1000)) * 1000).toISOString()
@@ -72,7 +72,7 @@ async function receive(request: HttpRequest, context: InvocationContext): Promis
   await client.createTable()
   await client.upsertEntity(entity, 'Replace')
   context.log(`Stored OwnTracks point ${timestamp}`)
-  return json({ ok: true }, 202)
+  return json([], 200)
 }
 
 async function exportLocations(request: HttpRequest): Promise<HttpResponseInit> {
