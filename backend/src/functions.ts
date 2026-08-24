@@ -57,7 +57,10 @@ async function receive(request: HttpRequest, context: InvocationContext): Promis
     context.log('OwnTracks payload is not valid JSON.')
     return json({ error: 'Request body must be valid JSON.' }, 400)
   }
-  if (body._type && body._type !== 'location') return json({ error: 'Only OwnTracks location events are accepted.' }, 400)
+  if (body._type && body._type !== 'location') {
+    context.log(`Ignoring OwnTracks ${body._type} event; only location events are stored.`)
+    return json({ ok: true, ignored: body._type }, 202)
+  }
   if (!Number.isFinite(body.lat) || !Number.isFinite(body.lon)) return json({ error: 'lat and lon are required.' }, 400)
   const timestamp = new Date((body.tst || Math.floor(Date.now() / 1000)) * 1000).toISOString()
   const geocode = await reverseGeocode(body.lat!, body.lon!)
