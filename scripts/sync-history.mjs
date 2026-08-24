@@ -1,94 +1,38 @@
-import { mkdir, writeFile } from 'node:fs/promises'
+import { mkdir, readFile, writeFile } from 'node:fs/promises'
 
 const token = process.env.SMARTTHINGS_TOKEN
 const locationId = process.env.SMARTTHINGS_LOCATION_ID
-const apiBase = process.env.SMARTTHINGS_API_BASE || 'https://api.smartthings.com/v1'
-const historyUrl = process.env.SMARTTHINGS_HISTORY_URL || `${apiBase}/history/devices?locationId=${encodeURIComponent(locationId)}`
-
-if (!token) throw new Error('SMARTTHINGS_TOKEN is required. Add it under repository Settings > Secrets and variables > Actions.')
-if (!locationId || locationId === 'YOUR_LOCATION_ID') throw new Error('SMARTTHINGS_LOCATION_ID is missing or still uses the placeholder YOUR_LOCATION_ID.')
-
-const response = await fetch(historyUrl, { headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' } })
-if (!response.ok) {
-  const body = (await response.text()).replace(/Bearer\s+[^\s]+/gi, 'Bearer [redacted]').slice(0, 500)
-  throw new Error(`SmartThings history request failed: ${response.status} ${response.statusText}. Response: ${body || '[empty response]'}`)
-}
-
+if (!token) throw new Error('SMARTTHINGS_TOKEN is required.')
+if (!locationId || locationId === 'YOUR_LOCATION_ID') throw new Error('SMARTTHINGS_LOCATION_ID is missing.')
+const url = process.env.SMARTTHINGS_HISTORY_URL || `https://api.smartthings.com/v1/history/devices?locationId=${encodeURIComponent(locationId)}`
+const response = await fetch(url, { headers: { Authorization: `Bearer ${token}`, Accept: 'application/json' } })
+if (!response.ok) throw new Error(`SmartThings history request failed: ${response.status} ${response.statusText}`)
 const payload = await response.json()
-const records = collectRecords(payload)
-const points = records
-  .map(normalizeRecord)
-  .filter((point) => point !== null)
-  .sort((left, right) => left.timestamp.localeCompare(right.timestamp))
-
-const output = {
-  syncedAt: new Date().toISOString(),
-  locationId,
-  points: projectCoordinates(points),
-}
-
+const notes = await readJson('public/location-notes.json', {})
+const records = collect(payload).map(normalize).filter(Boolean).sort((a, b) => a.timestamp.localeCompare(b.timestamp))
+const output = { syncedAt: new Date().toISOString(), points: records.map((point) => ({
+  time: point.timestamp, city: point.country === 'UK' ? undefined : point.city, country: point.country,
+  place: point.country === 'UK' ? 'UK' : point.city, accuracyKm: 1, note: notes[point.timestamp]?.note, video: notes[point.timestamp]?.video,
+  x: point.x, y: point.y,
+})).map(stripUndefined) }
 await mkdir('public', { recursive: true })
 await writeFile('public/location-history.json', `${JSON.stringify(output, null, 2)}\n`)
-console.log(`Wrote ${output.points.length} location points to public/location-history.json`)
+console.log(`Wrote ${output.points.length} privacy-rounded points.`)
 
-function collectRecords(value) {
-  if (Array.isArray(value)) return value.flatMap(collectRecords)
+function collect(value) {
+  if (Array.isArray(value)) return value.flatMap(collect)
   if (!value || typeof value !== 'object') return []
-  const object = value
-  for (const key of ['items', 'history', 'events', 'locations', 'data']) {
-    if (Array.isArray(object[key])) return object[key].flatMap(collectRecords)
-  }
-  return object.latitude !== undefined || object.lat !== undefined ? [object] : []
+  for (const key of ['items', 'history', 'events', 'locations', 'data']) if (Array.isArray(value[key])) return value[key].flatMap(collect)
+  return value.latitude !== undefined || value.lat !== undefined || value.location ? [value] : []
 }
-
-function normalizeRecord(record) {
+function normalize(record) {
   const latitude = Number(record.latitude ?? record.lat ?? record.location?.latitude ?? record.location?.lat)
-  const longitude = Number(record.longitude ?? record.lng ?? record.lon ?? record.location?.longitude ?? record.location?.lng)
-  const rawTimestamp = record.timestamp ?? record.time ?? record.createdAt ?? record.occurredAt
-  if (!Number.isFinite(latitude) || !Number.isFinite(longitude) || !rawTimestamp) return null
-  return {
-    timestamp: new Date(rawTimestamp).toISOString(),
-    latitude,
-    longitude,
-    accuracy: Number(record.accuracy ?? record.location?.accuracy ?? 0),
-    deviceId: canonicalDeviceId(String(record.deviceName ?? record.device?.name ?? record.deviceId ?? 'unknown')),
-    device: String(record.deviceName ?? record.device?.name ?? record.deviceId ?? 'SmartThings device'),
-    place: String(record.place ?? record.locationName ?? 'Unknown place'),
-  }
+  const longitude = Number(record.longitude ?? record.lng ?? record.location?.longitude ?? record.location?.lng)
+  const rawTime = record.timestamp ?? record.time ?? record.createdAt ?? record.occurredAt
+  if (!Number.isFinite(latitude) || !Number.isFinite(longitude) || !rawTime) return null
+  const timestamp = new Date(rawTime).toISOString()
+  const country = String(record.country ?? record.location?.country ?? '').toLowerCase().includes('kingdom') || String(record.country ?? '').toLowerCase() === 'uk' ? 'UK' : String(record.country ?? '')
+  return { timestamp, country, city: record.city ?? record.location?.city ?? record.place ?? 'Somewhere new', latitude, longitude }
 }
-
-function canonicalDeviceId(name) {
-  const normalized = name.toLowerCase()
-  if (normalized.includes('watch')) return 'watch'
-  if (normalized.includes('tag') || normalized.includes('tracker') || normalized.includes('keys')) return 'tag'
-  if (normalized.includes('phone') || normalized.includes('galaxy') || normalized.includes('mobile')) return 'phone'
-  return name
-}
-
-function projectCoordinates(points) {
-  if (!points.length) return []
-  const latitudes = points.map((point) => point.latitude)
-  const longitudes = points.map((point) => point.longitude)
-  const minLat = Math.min(...latitudes)
-  const maxLat = Math.max(...latitudes)
-  const minLon = Math.min(...longitudes)
-  const maxLon = Math.max(...longitudes)
-  return points.map((point) => ({
-    x: scale(point.longitude, minLon, maxLon),
-    y: 100 - scale(point.latitude, minLat, maxLat),
-    time: new Date(point.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }),
-    place: point.place,
-    device: point.device,
-    address: '',
-    accuracy: `${point.accuracy}m`,
-    timestamp: point.timestamp,
-    latitude: point.latitude,
-    longitude: point.longitude,
-    deviceId: point.deviceId,
-  }))
-}
-
-function scale(value, minimum, maximum) {
-  if (minimum === maximum) return 50
-  return Math.round(((value - minimum) / (maximum - minimum)) * 1000) / 10
-}
+function stripUndefined(value) { return Object.fromEntries(Object.entries(value).filter(([, item]) => item !== undefined)) }
+function readJson(path, fallback) { return readFile(path, 'utf8').then(JSON.parse).catch(() => fallback) }

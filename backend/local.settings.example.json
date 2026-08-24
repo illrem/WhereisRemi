@@ -1,0 +1,13 @@
+{
+  "IsEncrypted": false,
+  "Values": {
+    "AzureWebJobsStorage": "UseDevelopmentStorage=true",
+    "FUNCTIONS_WORKER_RUNTIME": "node",
+    "LOCATION_TABLE_NAME": "LocationPoints",
+    "OWNTRACKS_TOKEN": "replace-with-a-long-random-token",
+    "OWNTRACKS_USER": "optional-owntracks-user",
+    "OWNTRACKS_PASSWORD": "optional-owntracks-password",
+    "EXPORT_TOKEN": "replace-with-a-different-long-random-token",
+    "AZURE_MAPS_KEY": "optional-for-city-names"
+  }
+}

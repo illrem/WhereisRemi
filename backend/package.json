@@ -1,0 +1,14 @@
+{
+  "name": "whereisremi-location-api",
+  "private": true,
+  "type": "module",
+  "scripts": { "build": "tsc" },
+  "dependencies": {
+    "@azure/functions": "^4.7.2",
+    "@azure/data-tables": "^13.3.0"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "~6.0.2"
+  }
+}

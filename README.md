@@ -1,56 +1,22 @@
 # whereisREMI
 
-The public Vite app reads `public/location-history.json`. GitHub Actions can refresh that file from SmartThings without exposing the SmartThings token to the browser.
+A privacy-aware GitHub Pages location journal. The site reads `public/location-history.json`; it never receives an OwnTracks or Azure token.
 
-## Local SmartThings sync
+## OwnTracks + Azure setup
 
-PowerShell:
+1. Create an Azure Storage account and an Azure Functions app using the Node.js 24 model. In the Function App configuration, add `AzureWebJobsStorage`, `OWNTRACKS_TOKEN`, `EXPORT_TOKEN`, and `LOCATION_TABLE_NAME=LocationPoints`. Add `AZURE_MAPS_KEY` if you want reverse-geocoded city names; without it, the app falls back to `Somewhere new`. You can use `OWNTRACKS_USER` and `OWNTRACKS_PASSWORD` instead of the token header if your OwnTracks client is configured for Basic Auth.
+2. Create `backend/package-lock.json` with `cd backend; npm install`, then add `AZURE_FUNCTIONAPP_NAME` and `AZURE_FUNCTIONAPP_PUBLISH_PROFILE` as GitHub Actions secrets. The `Deploy Azure Functions API` workflow deploys changes under `backend/`.
+3. Configure OwnTracks HTTP mode with the deployed URL `https://YOUR_FUNCTION_APP.azurewebsites.net/api/owntracks`, method `POST`, and JSON/Webhook payload mode. Use the `x-location-token` header with `OWNTRACKS_TOKEN`, or the OwnTracks username/password fields with `OWNTRACKS_USER` and `OWNTRACKS_PASSWORD`. OwnTracks sends its `_type=location`, `lat`, `lon`, `tst`, `acc`, and `tid` fields to the Function.
+4. Add `AZURE_LOCATION_API_URL` as `https://YOUR_FUNCTION_APP.azurewebsites.net/api/locations` and `AZURE_LOCATION_API_TOKEN` set to the same value as `EXPORT_TOKEN`. The `Sync Azure location history` workflow copies the sanitized export to the Pages site every 15 minutes.
 
-```powershell
-$env:SMARTTHINGS_TOKEN = 'your-personal-access-token'
-$env:SMARTTHINGS_LOCATION_ID = 'your-location-id'
-$env:SMARTTHINGS_HISTORY_URL = 'https://api.smartthings.com/v1/history/devices?locationId=your-location-id'
-npm run sync-history
-npm run dev
-```
+The Function stores location points in Azure Table Storage and rounds coordinates before export. Azure Maps supplies city/country names when configured; UK results are always exported as `UK`. Keep `OWNTRACKS_TOKEN` and `EXPORT_TOKEN` different, long, and random.
 
-`SMARTTHINGS_HISTORY_URL` is optional and lets you use the exact history URL provided by your approved SmartThings integration. Tokens must only be passed as environment variables or GitHub Actions secrets.
+## Setup
 
-## GitHub Actions setup
+1. Add repository Actions secrets named `SMARTTHINGS_TOKEN` and `SMARTTHINGS_LOCATION_ID`. Add `SMARTTHINGS_HISTORY_URL` only when your approved SmartThings integration uses a different endpoint.
+2. Enable GitHub Pages with **GitHub Actions** as the source.
+3. Run **Sync location history** once, or wait for the 15-minute schedule.
 
-Add `SMARTTHINGS_TOKEN` and `SMARTTHINGS_LOCATION_ID` as repository Actions secrets. Add `SMARTTHINGS_HISTORY_URL` too if the default history URL is not the one provided by SmartThings. Then run **Actions > Sync SmartThings history > Run workflow**. The workflow in `.github/workflows/sync-history.yml` updates the public JSON every 15 minutes.
+The workflow fetches history server-side, publishes city-level locations, and labels UK locations `UK`. It intentionally does not publish exact coordinates. Edit `public/location-notes.json` to attach a `note` and YouTube `video` URL keyed by the exact point timestamp; the next sync carries those fields into the public history.
 
-Location history written to `public/` is public. Remove exact addresses or reduce coordinate precision before publishing if the site is public.
-
-If the workflow fails, open the failed **Validate SmartThings configuration** or **Fetch SmartThings history** step. A `401` usually means the token is invalid or expired, a `403` means the token does not have the required history permission, and a `404` means the history URL is not available for your SmartThings integration. In the last two cases, set `SMARTTHINGS_HISTORY_URL` to the exact approved endpoint or use SmartThings OAuth instead of a personal token.
-
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
-
-Currently, two official plugins are available:
-
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
-
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
-
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
-
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Location history is public. Review the generated JSON before publishing and remove anything you do not want friends and family to see.

@@ -1,4 +1,4 @@
-name: Sync location history
+name: Sync Azure location history
 on:
   workflow_dispatch:
   schedule:
@@ -13,13 +13,12 @@ jobs:
       - uses: actions/setup-node@v5
         with: { node-version: 24, cache: npm }
       - run: npm ci
-      - name: Fetch and round location data
-        run: npm run sync-history
+      - name: Export sanitized locations
+        run: npm run sync-azure
         env:
-          SMARTTHINGS_TOKEN: ${{ secrets.SMARTTHINGS_TOKEN }}
-          SMARTTHINGS_LOCATION_ID: ${{ secrets.SMARTTHINGS_LOCATION_ID }}
-          SMARTTHINGS_HISTORY_URL: ${{ secrets.SMARTTHINGS_HISTORY_URL }}
-      - name: Publish changed history
+          AZURE_LOCATION_API_URL: ${{ secrets.AZURE_LOCATION_API_URL }}
+          AZURE_LOCATION_API_TOKEN: ${{ secrets.AZURE_LOCATION_API_TOKEN }}
+      - name: Publish history
         run: |
           git config user.name github-actions[bot]
           git config user.email 41898282+github-actions[bot]@users.noreply.github.com
