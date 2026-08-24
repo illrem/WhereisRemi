@@ -43,8 +43,20 @@ async function reverseGeocode(latitude: number, longitude: number) {
 }
 
 async function receive(request: HttpRequest, context: InvocationContext): Promise<HttpResponseInit> {
+  const contentType = request.headers.get('content-type') || '[missing]'
+  const authorization = request.headers.get('authorization')
+  const tokenHeader = request.headers.get('x-location-token')
+  const rawBody = await request.text()
+  context.log(`OwnTracks request: content-type=${contentType}, basic-auth=${authorization?.startsWith('Basic ') ? 'present' : 'absent'}, token-header=${tokenHeader ? 'present' : 'absent'}`)
+  context.log(`OwnTracks body: ${rawBody || '[empty]'}`)
   if (!authorized(request, process.env.OWNTRACKS_TOKEN, process.env.OWNTRACKS_USER, process.env.OWNTRACKS_PASSWORD)) return json({ error: 'Unauthorized' }, 401)
-  const body = await request.json() as OwnTracksLocation
+  let body: OwnTracksLocation
+  try {
+    body = JSON.parse(rawBody) as OwnTracksLocation
+  } catch {
+    context.log('OwnTracks payload is not valid JSON.')
+    return json({ error: 'Request body must be valid JSON.' }, 400)
+  }
   if (body._type && body._type !== 'location') return json({ error: 'Only OwnTracks location events are accepted.' }, 400)
   if (!Number.isFinite(body.lat) || !Number.isFinite(body.lon)) return json({ error: 'lat and lon are required.' }, 400)
   const timestamp = new Date((body.tst || Math.floor(Date.now() / 1000)) * 1000).toISOString()
