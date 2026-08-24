@@ -1,4 +1,58 @@
 {
-  "syncedAt": "2026-08-24T22:59:34.913Z",
-  "points": []
+  "syncedAt": "2026-08-24T23:02:41.025Z",
+  "points": [
+    {
+      "time": "2026-08-24T23:02:23.7766122Z",
+      "city": "Cape Town",
+      "country": "ZA",
+      "place": "Cape Town",
+      "accuracyKm": 1,
+      "lat": -33.92,
+      "lng": 18.42
+    },
+    {
+      "time": "2026-08-24T23:02:23.6402112Z",
+      "city": "Sydney",
+      "country": "AU",
+      "place": "Sydney",
+      "accuracyKm": 1,
+      "lat": -33.87,
+      "lng": 151.21
+    },
+    {
+      "time": "2026-08-24T23:02:23.5366654Z",
+      "city": "Tokyo",
+      "country": "JP",
+      "place": "Tokyo",
+      "accuracyKm": 1,
+      "lat": 35.68,
+      "lng": 139.69
+    },
+    {
+      "time": "2026-08-24T23:02:23.4341156Z",
+      "city": "New York",
+      "country": "US",
+      "place": "New York",
+      "accuracyKm": 1,
+      "lat": 40.71,
+      "lng": -74.01
+    },
+    {
+      "time": "2026-08-24T23:02:23.3265873Z",
+      "city": "Paris",
+      "country": "FR",
+      "place": "Paris",
+      "accuracyKm": 1,
+      "lat": 48.86,
+      "lng": 2.35
+    },
+    {
+      "time": "2026-08-24T23:02:23.007985Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 1,
+      "lat": 51.47,
+      "lng": -2.58
+    }
+  ]
 }
