@@ -13,11 +13,10 @@ type HistoryFile = { syncedAt?: string; points?: LocationPoint[] }
 type RangeSelection = 'today' | 'week' | 'month' | 'last-month' | `month:${string}`
 
 const fallback: HistoryFile = { points: [] }
-const uk = /^(uk|united kingdom|england|scotland|wales|northern ireland)$/i
 
 function labelFor(point: LocationPoint) {
-  if (uk.test(point.country ?? '') || uk.test(point.place ?? '')) return 'UK'
-  return point.city || point.place || 'Somewhere new'
+  if (/^(uk|united kingdom|england|scotland|wales|northern ireland)$/i.test(point.country ?? '') || point.place === 'UK') return 'UK'
+  return point.city || point.place || 'adventure'
 }
 function dateLabel(value: string) {
   const date = new Date(value)
@@ -54,7 +53,6 @@ function WorldMap({ points, current, onSelect }: { points: LocationPoint[]; curr
 export default function App() {
   const [history, setHistory] = useState<HistoryFile>(fallback)
   const [selected, setSelected] = useState(0)
-  const [filter, setFilter] = useState<'all' | 'notes'>('all')
   const [range, setRange] = useState<RangeSelection>('month')
   const [loadError, setLoadError] = useState('')
 
@@ -81,8 +79,7 @@ export default function App() {
     return monthKey(point.time) === range.slice(6)
   }
   const rangePoints = points.filter(inRange)
-  const visible = filter === 'notes' ? rangePoints.filter((point) => point.note || point.video) : rangePoints
-  const current = visible[selected] ?? visible[0]
+  const current = rangePoints[selected] ?? rangePoints[0]
   const latest = rangePoints[0] ?? points[0]
   const places = new Set(rangePoints.map(labelFor))
   const monthKeys = [...new Set(points.map((point) => monthKey(point.time)).filter(Boolean))].sort().reverse()
@@ -105,7 +102,7 @@ export default function App() {
       <section className="content">
         <div className="heading"><div><p className="eyebrow">CURRENTLY</p><h2>{labelFor(latest ?? { time: '' })}</h2><p className="muted">{latest ? `${dateLabel(latest.time)} · ${timeLabel(latest.time)}` : 'No location has been published yet'}</p></div><div className="signal"><span /><span /><span /><span /><span /></div></div>
         <section className="map" aria-label="Location map">
-          <WorldMap points={rangePoints} current={current} onSelect={(point) => { const next = visible.indexOf(point); if (next >= 0) setSelected(next) }} />
+          <WorldMap points={rangePoints} current={current} onSelect={(point) => { const next = rangePoints.indexOf(point); if (next >= 0) setSelected(next) }} />
           <span className="map-label north">N</span>
           {current && <div className="map-caption"><small>SELECTED STOP</small><strong>{labelFor(current)}</strong><span>{dateLabel(current.time)} · {timeLabel(current.time)}</span></div>}
           <div className="scale">10 km</div>
@@ -114,9 +111,9 @@ export default function App() {
           <div className="range-quick"><button className={range === 'today' ? 'active' : ''} onClick={() => changeRange('today')}>Today</button><button className={range === 'week' ? 'active' : ''} onClick={() => changeRange('week')}>This week</button><button className={range === 'month' ? 'active' : ''} onClick={() => changeRange('month')}>This month</button><button className={range === 'last-month' ? 'active' : ''} onClick={() => changeRange('last-month')}>Last month</button></div>
           <div className="month-calendar"><span className="range-label">MONTHS</span>{monthKeys.map((key) => <button key={key} className={range === `month:${key}` ? 'active' : ''} onClick={() => changeRange(`month:${key}`)}>{monthLabel(key)}</button>)}</div>
         </nav>
-        <div className="history-head"><div><p className="eyebrow">THE JOURNAL</p><h2>Places along the way</h2></div><div className="filters"><button className={filter === 'all' ? 'active' : ''} onClick={() => { setFilter('all'); setSelected(0) }}>All stops</button><button className={filter === 'notes' ? 'active' : ''} onClick={() => { setFilter('notes'); setSelected(0) }}>With notes</button></div></div>
+        <div className="history-head"><div><p className="eyebrow">THE JOURNAL</p><h2>Places along the way</h2></div></div>
         {loadError && <p className="notice">{loadError}</p>}
-        {visible.length === 0 ? <div className="empty"><strong>Your atlas is ready.</strong><span>The first synced location will appear here.</span></div> : <div className="timeline">{visible.map((point, index) => <button className={`entry ${index === selected ? 'selected' : ''}`} key={point.id ?? point.time} onClick={() => setSelected(index)}><span className="entry-dot" /><span className="entry-date">{dateLabel(point.time)}<small>{timeLabel(point.time)}</small></span><span className="entry-place"><strong>{labelFor(point)}</strong><small>{point.accuracyKm ? `within ${point.accuracyKm} km` : 'approximate location'}</small></span><span className="entry-arrow">{point.note || point.video ? '✦' : '↗'}</span></button>)}</div>}
+        {rangePoints.length === 0 ? <div className="empty"><strong>Your atlas is ready.</strong><span>The first synced location will appear here.</span></div> : <div className="timeline">{rangePoints.map((point, index) => <button className={`entry ${index === selected ? 'selected' : ''}`} key={point.id ?? point.time} onClick={() => setSelected(index)}><span className="entry-dot" /><span className="entry-date">{dateLabel(point.time)}<small>{timeLabel(point.time)}</small></span><span className="entry-place"><strong>{labelFor(point)}</strong><small>{point.accuracyKm ? `within ${point.accuracyKm} km` : 'approximate location'}</small></span><span className="entry-arrow">{point.note || point.video ? '✦' : '↗'}</span></button>)}</div>}
         {current && (current.note || current.video) && <article className="memory"><p className="eyebrow">A MEMORY FROM HERE</p>{current.note && <p className="note">“{current.note}”</p>}{current.video && <a href={current.video} target="_blank" rel="noreferrer">Watch the video <span>↗</span></a>}</article>}
         <footer>Location data is rounded before it is published. <span>Made for friends & family.</span></footer>
       </section>

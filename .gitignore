@@ -2,3 +2,6 @@ node_modules/
 dist/
 .env
 .env.*
+secrets/*
+!secrets/README.md
+!secrets/location.test.example.json

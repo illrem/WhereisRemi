@@ -80,7 +80,7 @@ async function exportLocations(request: HttpRequest): Promise<HttpResponseInit> 
   await client.createTable()
   const points: Array<Record<string, unknown>> = []
   for await (const entity of client.listEntities<LocationEntity>()) {
-    points.push({ time: entity.timestamp, city: entity.country === 'UK' ? undefined : entity.city, country: entity.country, place: entity.country === 'UK' ? 'UK' : entity.city || 'Somewhere new', accuracyKm: 1, lat: entity.latitude, lng: entity.longitude })
+    points.push({ time: entity.timestamp, city: entity.country === 'UK' ? undefined : entity.city, country: entity.country, place: entity.country === 'UK' ? 'UK' : entity.city || 'adventure', accuracyKm: 1, lat: entity.latitude, lng: entity.longitude })
   }
   points.sort((a, b) => String(b.time).localeCompare(String(a.time)))
   return json({ syncedAt: new Date().toISOString(), points: points.map((point) => Object.fromEntries(Object.entries(point).filter(([, value]) => value !== undefined))) })
