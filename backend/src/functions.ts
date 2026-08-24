@@ -16,8 +16,17 @@ function authorized(request: HttpRequest, expected: string | undefined, basicUse
     if (supplied.length === configured.length && crypto.timingSafeEqual(supplied, configured)) return true
   }
   const basic = request.headers.get('authorization')?.match(/^Basic\s+(.+)$/i)
-  if (!basic || !basicUser || !basicPassword) return false
-  return basic[1] === Buffer.from(`${basicUser}:${basicPassword}`).toString('base64')
+  if (!basic) return false
+  const credentials = Buffer.from(basic[1], 'base64').toString('utf8')
+  const accepted = [
+    basicUser && basicPassword ? `${basicUser}:${basicPassword}` : '',
+    expected ? `owntracks:${expected}` : '',
+  ].filter(Boolean)
+  return accepted.some((candidate) => {
+    const supplied = Buffer.from(credentials)
+    const configured = Buffer.from(candidate)
+    return supplied.length === configured.length && crypto.timingSafeEqual(supplied, configured)
+  })
 }
 function json(body: unknown, status = 200): HttpResponseInit { return { status, jsonBody: body, headers: { 'Cache-Control': 'no-store' } } }
 function isUK(country: string | undefined) { return /^(gb|uk|united kingdom|england|scotland|wales|northern ireland)$/i.test(country || '') }
