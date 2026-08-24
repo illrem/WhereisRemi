@@ -1,4 +1,89 @@
 {
-  "syncedAt": "2026-08-24T22:00:41.942Z",
-  "points": []
+  "syncedAt": "2026-08-24T22:08:00.240Z",
+  "points": [
+    {
+      "time": "2026-08-24T22:07:06.0435637Z",
+      "place": "Somewhere new",
+      "accuracyKm": 1,
+      "lat": 51.47,
+      "lng": -2.58
+    },
+    {
+      "time": "2026-08-24T22:07:04.051437Z",
+      "place": "Somewhere new",
+      "accuracyKm": 1,
+      "lat": 51.47,
+      "lng": -2.58
+    },
+    {
+      "time": "2026-08-24T22:07:02.0523276Z",
+      "place": "Somewhere new",
+      "accuracyKm": 1,
+      "lat": 51.47,
+      "lng": -2.58
+    },
+    {
+      "time": "2026-08-24T22:07:00.0731464Z",
+      "place": "Somewhere new",
+      "accuracyKm": 1,
+      "lat": 51.47,
+      "lng": -2.58
+    },
+    {
+      "time": "2026-08-24T22:06:57.4972507Z",
+      "place": "Somewhere new",
+      "accuracyKm": 1,
+      "lat": 51.47,
+      "lng": -2.58
+    },
+    {
+      "time": "2026-08-24T22:06:56.0835258Z",
+      "place": "Somewhere new",
+      "accuracyKm": 1,
+      "lat": 51.47,
+      "lng": -2.58
+    },
+    {
+      "time": "2026-08-24T22:06:54.0896644Z",
+      "place": "Somewhere new",
+      "accuracyKm": 1,
+      "lat": 51.47,
+      "lng": -2.58
+    },
+    {
+      "time": "2026-08-24T22:06:53.6983806Z",
+      "place": "Somewhere new",
+      "accuracyKm": 1,
+      "lat": 51.47,
+      "lng": -2.58
+    },
+    {
+      "time": "2026-08-24T22:06:52.1040452Z",
+      "place": "Somewhere new",
+      "accuracyKm": 1,
+      "lat": 51.47,
+      "lng": -2.58
+    },
+    {
+      "time": "2026-08-24T22:06:50.1063973Z",
+      "place": "Somewhere new",
+      "accuracyKm": 1,
+      "lat": 51.47,
+      "lng": -2.58
+    },
+    {
+      "time": "2026-08-24T22:06:48.3280042Z",
+      "place": "Somewhere new",
+      "accuracyKm": 1,
+      "lat": 51.47,
+      "lng": -2.58
+    },
+    {
+      "time": "2026-08-24T22:06:22.5027018Z",
+      "place": "Somewhere new",
+      "accuracyKm": 1,
+      "lat": 51.47,
+      "lng": -2.58
+    }
+  ]
 }
