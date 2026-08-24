@@ -2,6 +2,7 @@
   "name": "whereisremi-location-api",
   "private": true,
   "type": "module",
+  "main": "dist/functions.js",
   "scripts": { "build": "tsc" },
   "dependencies": {
     "@azure/functions": "^4.7.2",

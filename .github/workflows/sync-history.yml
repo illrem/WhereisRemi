@@ -1,4 +1,4 @@
-name: Sync location history
+name: Legacy SmartThings sync (disabled)
 on:
   workflow_dispatch:
   schedule:
@@ -7,6 +7,7 @@ permissions:
   contents: write
 jobs:
   sync:
+    if: ${{ false }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
