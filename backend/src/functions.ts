@@ -31,6 +31,7 @@ function authorized(request: HttpRequest, expected: string | undefined, basicUse
 function json(body: unknown, status = 200): HttpResponseInit { return { status, jsonBody: body, headers: { 'Cache-Control': 'no-store' } } }
 function isUK(country: string | undefined) { return /^(gb|uk|united kingdom|england|scotland|wales|northern ireland)$/i.test(country || '') }
 function roundKm(value: number) { return Math.round(value * 100) / 100 }
+function round100Km(value: number) { return Math.round(value) }
 const duplicateWindowMs = 12 * 60 * 60 * 1000
 const duplicateCoordinateDelta = 0.01
 
@@ -109,7 +110,8 @@ async function exportLocations(request: HttpRequest): Promise<HttpResponseInit> 
   await client.createTable()
   const points: Array<Record<string, unknown>> = []
   for await (const entity of client.listEntities<LocationEntity>()) {
-    points.push({ time: entity.timestamp, city: entity.country === 'UK' ? undefined : entity.city, country: entity.country, place: entity.country === 'UK' ? 'UK' : entity.city || 'adventure', accuracyKm: 1, lat: entity.latitude, lng: entity.longitude })
+    const isUnitedKingdom = entity.country === 'UK'
+    points.push({ time: entity.timestamp, city: isUnitedKingdom ? undefined : entity.city, country: entity.country, place: isUnitedKingdom ? 'UK' : entity.city || 'adventure', accuracyKm: isUnitedKingdom ? 100 : 1, lat: isUnitedKingdom ? round100Km(entity.latitude) : entity.latitude, lng: isUnitedKingdom ? round100Km(entity.longitude) : entity.longitude })
   }
   points.sort((a, b) => String(b.time).localeCompare(String(a.time)))
   return json({ syncedAt: new Date().toISOString(), points: points.map((point) => Object.fromEntries(Object.entries(point).filter(([, value]) => value !== undefined))) })

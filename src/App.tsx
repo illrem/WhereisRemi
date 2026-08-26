@@ -53,7 +53,7 @@ function WorldMap({ points, current, onSelect }: { points: LocationPoint[]; curr
 export default function App() {
   const [history, setHistory] = useState<HistoryFile>(fallback)
   const [selected, setSelected] = useState(0)
-  const [range, setRange] = useState<RangeSelection>('month')
+  const [range, setRange] = useState<RangeSelection>('today')
   const [loadError, setLoadError] = useState('')
 
   useEffect(() => {

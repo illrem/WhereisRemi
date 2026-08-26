@@ -49,11 +49,15 @@ test('international test locations are exported with the expected privacy labels
   for (const [index, location] of locations.entries()) {
     const roundedLat = Math.round(location.lat * 100) / 100
     const roundedLng = Math.round(location.lon * 100) / 100
-    const point = payload.points?.find((candidate) => candidate.lat === roundedLat && candidate.lng === roundedLng && candidate.place === location.expectedPlace)
+    const expectedLat = location.expectedCountry === 'UK' ? Math.round(roundedLat) : roundedLat
+    const expectedLng = location.expectedCountry === 'UK' ? Math.round(roundedLng) : roundedLng
+    const expectedAccuracy = location.expectedCountry === 'UK' ? 100 : 1
+    const point = payload.points?.find((candidate) => candidate.lat === expectedLat && candidate.lng === expectedLng && candidate.place === location.expectedPlace)
     assert.ok(point, `No exported point found for ${location.lat}, ${location.lon}`)
     assert.equal(point.country, location.expectedCountry)
     assert.equal(point.place, location.expectedPlace)
-    assert.equal(point.lat, roundedLat)
-    assert.equal(point.lng, roundedLng)
+    assert.equal(point.accuracyKm, expectedAccuracy)
+    assert.equal(point.lat, expectedLat)
+    assert.equal(point.lng, expectedLng)
   }
 })
