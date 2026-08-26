@@ -32,7 +32,6 @@ function json(body: unknown, status = 200): HttpResponseInit { return { status, 
 function isUK(country: string | undefined) { return /^(gb|uk|united kingdom|england|scotland|wales|northern ireland)$/i.test(country || '') }
 function roundKm(value: number) { return Math.round(value * 100) / 100 }
 function round100Km(value: number) { return Math.round(value) }
-const duplicateWindowMs = 12 * 60 * 60 * 1000
 const duplicateCoordinateDelta = 0.01
 
 function locationTimestamp(entity: LocationEntity) {
@@ -51,15 +50,14 @@ async function latestLocation() {
   return latest
 }
 
-function isRecentNearbyLocation(location: LocationEntity | undefined, latitude: number, longitude: number) {
+function isSameDayNearbyLocation(location: LocationEntity | undefined, latitude: number, longitude: number) {
   if (!location) return false
   const timestamp = locationTimestamp(location)
   if (!timestamp) return false
-  const age = Date.now() - Date.parse(timestamp)
-  const isRecent = age >= 0 && age < duplicateWindowMs
+  const isSameDay = timestamp.slice(0, 10) === new Date().toISOString().slice(0, 10)
   const isNearby = Math.abs(location.latitude - latitude) <= duplicateCoordinateDelta &&
     Math.abs(location.longitude - longitude) <= duplicateCoordinateDelta
-  return isRecent && isNearby
+  return isSameDay && isNearby
 }
 
 async function reverseGeocode(latitude: number, longitude: number) {
@@ -99,7 +97,7 @@ async function receive(request: HttpRequest, context: InvocationContext): Promis
   }
   if (!Number.isFinite(body.lat) || !Number.isFinite(body.lon)) return json({ error: 'lat and lon are required.' }, 400)
   await client.createTable()
-  if (isRecentNearbyLocation(await latestLocation(), body.lat!, body.lon!)) {
+  if (isSameDayNearbyLocation(await latestLocation(), body.lat!, body.lon!)) {
     context.log('Ignoring recent nearby OwnTracks location.')
     return json([], 200)
   }
