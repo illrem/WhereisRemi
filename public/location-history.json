@@ -1,8 +1,56 @@
 {
-  "syncedAt": "2026-08-26T14:57:19.634Z",
+  "syncedAt": "2026-08-26T18:23:27.328Z",
   "points": [
     {
-      "time": "2026-08-26T14:51:43.7281575Z",
+      "time": "2026-08-25T22:31:46.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
+    },
+    {
+      "time": "2026-08-25T22:31:46.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
+    },
+    {
+      "time": "2026-08-25T22:31:46.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
+    },
+    {
+      "time": "2026-08-25T00:02:51.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
+    },
+    {
+      "time": "2026-08-24T23:22:53.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
+    },
+    {
+      "time": "2026-08-24T23:02:22.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
+    },
+    {
+      "time": "2026-07-18T12:00:00.000Z",
       "city": "Parma",
       "country": "IT",
       "place": "Parma",
@@ -11,7 +59,7 @@
       "lng": 10.33
     },
     {
-      "time": "2026-08-26T14:51:43.6275996Z",
+      "time": "2026-06-20T12:00:00.000Z",
       "city": "Venice Centre",
       "country": "IT",
       "place": "Venice Centre",
@@ -20,7 +68,7 @@
       "lng": 12.32
     },
     {
-      "time": "2026-08-26T14:51:43.5041414Z",
+      "time": "2026-06-16T12:00:00.000Z",
       "city": "Ljubljana",
       "country": "SI",
       "place": "Ljubljana",
@@ -29,7 +77,7 @@
       "lng": 14.51
     },
     {
-      "time": "2026-08-26T14:51:43.405574Z",
+      "time": "2026-06-15T12:00:00.000Z",
       "city": "Lienz",
       "country": "AT",
       "place": "Lienz",
@@ -38,7 +86,7 @@
       "lng": 12.77
     },
     {
-      "time": "2026-08-26T14:51:43.3149727Z",
+      "time": "2026-06-14T12:00:00.000Z",
       "city": "Torri del Benaco",
       "country": "IT",
       "place": "Torri del Benaco",
@@ -47,7 +95,7 @@
       "lng": 10.65
     },
     {
-      "time": "2026-08-26T14:51:43.2213838Z",
+      "time": "2026-06-08T12:00:00.000Z",
       "city": "La Spezia",
       "country": "IT",
       "place": "La Spezia",
@@ -56,7 +104,7 @@
       "lng": 9.82
     },
     {
-      "time": "2026-08-26T14:51:43.1128602Z",
+      "time": "2026-06-04T12:00:00.000Z",
       "city": "Beausoleil",
       "country": "FR",
       "place": "Beausoleil",
@@ -65,7 +113,7 @@
       "lng": 7.42
     },
     {
-      "time": "2026-08-26T14:51:42.9794458Z",
+      "time": "2026-06-03T12:00:00.000Z",
       "city": "Nice",
       "country": "FR",
       "place": "Nice",
@@ -74,7 +122,7 @@
       "lng": 7.26
     },
     {
-      "time": "2026-08-26T14:51:42.8649484Z",
+      "time": "2026-06-01T12:00:00.000Z",
       "city": "Clermont-Ferrand",
       "country": "FR",
       "place": "Clermont-Ferrand",
@@ -83,7 +131,7 @@
       "lng": 3.09
     },
     {
-      "time": "2026-08-26T14:51:42.7514466Z",
+      "time": "2026-05-27T12:00:00.000Z",
       "city": "Paris",
       "country": "FR",
       "place": "Paris",
@@ -92,7 +140,7 @@
       "lng": 2.35
     },
     {
-      "time": "2026-08-26T14:51:42.651988Z",
+      "time": "2026-05-04T12:00:00.000Z",
       "city": "Johannesburg",
       "country": "ZA",
       "place": "Johannesburg",
@@ -101,7 +149,7 @@
       "lng": 28.05
     },
     {
-      "time": "2026-08-26T14:51:42.5504341Z",
+      "time": "2026-04-29T12:00:00.000Z",
       "city": "Gqeberha",
       "country": "ZA",
       "place": "Gqeberha",
@@ -110,7 +158,7 @@
       "lng": 25.6
     },
     {
-      "time": "2026-08-26T14:51:42.4598319Z",
+      "time": "2026-04-20T12:00:00.000Z",
       "city": "Cape Town",
       "country": "ZA",
       "place": "Cape Town",
@@ -119,7 +167,7 @@
       "lng": 18.42
     },
     {
-      "time": "2026-08-26T14:51:42.3463307Z",
+      "time": "2026-04-13T12:00:00.000Z",
       "city": "Santa Cruz de Tenerife",
       "country": "ES",
       "place": "Santa Cruz de Tenerife",
@@ -128,7 +176,7 @@
       "lng": -16.25
     },
     {
-      "time": "2026-08-26T14:51:42.2417896Z",
+      "time": "2026-01-30T12:00:00.000Z",
       "city": "Reykjavík",
       "country": "IS",
       "place": "Reykjavík",
@@ -137,7 +185,7 @@
       "lng": -21.94
     },
     {
-      "time": "2026-08-26T14:51:42.1312742Z",
+      "time": "2025-09-14T12:00:00.000Z",
       "city": "Antalya",
       "country": "TR",
       "place": "Antalya",
@@ -146,7 +194,7 @@
       "lng": 30.7
     },
     {
-      "time": "2026-08-26T14:51:42.0117999Z",
+      "time": "2025-08-26T12:00:00.000Z",
       "city": "Brussels",
       "country": "BE",
       "place": "Brussels",
@@ -155,7 +203,7 @@
       "lng": 4.35
     },
     {
-      "time": "2026-08-26T14:51:41.90029Z",
+      "time": "2025-08-25T12:00:00.000Z",
       "city": "Luxembourg",
       "country": "LU",
       "place": "Luxembourg",
@@ -164,7 +212,7 @@
       "lng": 6.13
     },
     {
-      "time": "2026-08-26T14:51:41.7838009Z",
+      "time": "2025-08-24T12:00:00.000Z",
       "city": "Stuttgart",
       "country": "DE",
       "place": "Stuttgart",
@@ -173,7 +221,7 @@
       "lng": 9.18
     },
     {
-      "time": "2026-08-26T14:51:41.6882213Z",
+      "time": "2025-08-21T12:00:00.000Z",
       "city": "Unterseen",
       "country": "CH",
       "place": "Unterseen",
@@ -182,7 +230,7 @@
       "lng": 7.86
     },
     {
-      "time": "2026-08-26T14:51:41.5926404Z",
+      "time": "2025-08-17T12:00:00.000Z",
       "city": "Paris",
       "country": "FR",
       "place": "Paris",
@@ -191,7 +239,7 @@
       "lng": 2.35
     },
     {
-      "time": "2026-08-26T14:51:41.502038Z",
+      "time": "2025-08-04T12:00:00.000Z",
       "city": "Caen",
       "country": "FR",
       "place": "Caen",
@@ -200,7 +248,7 @@
       "lng": -0.37
     },
     {
-      "time": "2026-08-26T14:51:41.3882158Z",
+      "time": "2025-06-27T12:00:00.000Z",
       "city": "Berlin",
       "country": "DE",
       "place": "Berlin",
@@ -209,7 +257,7 @@
       "lng": 13.41
     },
     {
-      "time": "2026-08-26T14:51:41.2950935Z",
+      "time": "2025-04-28T12:00:00.000Z",
       "city": "Lagos",
       "country": "NG",
       "place": "Lagos",
@@ -218,7 +266,7 @@
       "lng": 3.38
     },
     {
-      "time": "2026-08-26T14:51:41.1855745Z",
+      "time": "2025-04-01T12:00:00.000Z",
       "city": "Hoàn Kiếm",
       "country": "VN",
       "place": "Hoàn Kiếm",
@@ -227,7 +275,7 @@
       "lng": 105.85
     },
     {
-      "time": "2026-08-26T14:51:41.0710774Z",
+      "time": "2025-03-27T12:00:00.000Z",
       "city": "Tokyo",
       "country": "JP",
       "place": "Tokyo",
@@ -236,7 +284,7 @@
       "lng": 139.69
     },
     {
-      "time": "2026-08-26T14:51:40.9804751Z",
+      "time": "2025-03-21T12:00:00.000Z",
       "city": "Osaka",
       "country": "JP",
       "place": "Osaka",
@@ -245,7 +293,7 @@
       "lng": 135.5
     },
     {
-      "time": "2026-08-26T14:51:40.8789222Z",
+      "time": "2025-03-17T12:00:00.000Z",
       "city": "Fukuoka",
       "country": "JP",
       "place": "Fukuoka",
@@ -254,7 +302,7 @@
       "lng": 130.4
     },
     {
-      "time": "2026-08-26T14:51:40.7664152Z",
+      "time": "2025-03-15T12:00:00.000Z",
       "city": "Hong Kong",
       "country": "HK",
       "place": "Hong Kong",
@@ -263,7 +311,7 @@
       "lng": 114.17
     },
     {
-      "time": "2026-08-26T14:51:40.6559008Z",
+      "time": "2025-02-27T12:00:00.000Z",
       "city": "Zakopane",
       "country": "PL",
       "place": "Zakopane",
@@ -272,7 +320,7 @@
       "lng": 19.95
     },
     {
-      "time": "2026-08-26T14:51:40.5493686Z",
+      "time": "2024-11-26T12:00:00.000Z",
       "city": "Krabi",
       "country": "TH",
       "place": "Krabi",
@@ -281,7 +329,7 @@
       "lng": 98.78
     },
     {
-      "time": "2026-08-26T14:51:40.4219282Z",
+      "time": "2024-11-20T12:00:00.000Z",
       "city": "Chiang Mai",
       "country": "TH",
       "place": "Chiang Mai",
@@ -290,7 +338,7 @@
       "lng": 98.99
     },
     {
-      "time": "2026-08-26T14:51:40.3263479Z",
+      "time": "2024-11-15T12:00:00.000Z",
       "city": "Bangkok",
       "country": "TH",
       "place": "Bangkok",
@@ -299,7 +347,7 @@
       "lng": 100.5
     },
     {
-      "time": "2026-08-26T14:51:40.2178244Z",
+      "time": "2024-09-22T12:00:00.000Z",
       "city": "Split",
       "country": "HR",
       "place": "Split",
@@ -308,7 +356,7 @@
       "lng": 16.44
     },
     {
-      "time": "2026-08-26T14:51:40.092376Z",
+      "time": "2024-07-05T12:00:00.000Z",
       "city": "Barcelona",
       "country": "ES",
       "place": "Barcelona",
@@ -317,7 +365,7 @@
       "lng": 2.17
     },
     {
-      "time": "2026-08-26T14:51:39.9663914Z",
+      "time": "2023-10-05T12:00:00.000Z",
       "city": "Perpignan",
       "country": "FR",
       "place": "Perpignan",
@@ -326,7 +374,7 @@
       "lng": 2.89
     },
     {
-      "time": "2026-08-26T14:51:39.8489078Z",
+      "time": "2023-08-30T12:00:00.000Z",
       "city": "Dortmund",
       "country": "DE",
       "place": "Dortmund",
@@ -335,7 +383,7 @@
       "lng": 7.47
     },
     {
-      "time": "2026-08-26T14:51:39.7493443Z",
+      "time": "2023-07-01T12:00:00.000Z",
       "city": "Eivissa",
       "country": "ES",
       "place": "Eivissa",
@@ -344,7 +392,7 @@
       "lng": 1.43
     },
     {
-      "time": "2026-08-26T14:51:39.6149344Z",
+      "time": "2023-06-01T12:00:00.000Z",
       "city": "Santander",
       "country": "ES",
       "place": "Santander",
@@ -353,7 +401,7 @@
       "lng": -3.81
     },
     {
-      "time": "2026-08-26T14:51:39.5074071Z",
+      "time": "2023-05-14T12:00:00.000Z",
       "city": "Luxor Qesm",
       "country": "EG",
       "place": "Luxor Qesm",
@@ -362,7 +410,7 @@
       "lng": 32.64
     },
     {
-      "time": "2026-08-26T14:51:39.3839489Z",
+      "time": "2023-05-10T12:00:00.000Z",
       "city": "Qesm Abdeen",
       "country": "EG",
       "place": "Qesm Abdeen",
@@ -371,7 +419,7 @@
       "lng": 31.24
     },
     {
-      "time": "2026-08-26T14:51:39.1927886Z",
+      "time": "2023-03-10T12:00:00.000Z",
       "city": "Berlin",
       "country": "DE",
       "place": "Berlin",
@@ -380,7 +428,7 @@
       "lng": 13.41
     },
     {
-      "time": "2026-08-26T14:51:39.0942211Z",
+      "time": "2022-08-28T12:00:00.000Z",
       "city": "Amsterdam",
       "country": "NL",
       "place": "Amsterdam",
@@ -389,7 +437,7 @@
       "lng": 4.9
     },
     {
-      "time": "2026-08-26T14:51:38.9737495Z",
+      "time": "2022-07-01T12:00:00.000Z",
       "city": "Eivissa",
       "country": "ES",
       "place": "Eivissa",
@@ -398,7 +446,7 @@
       "lng": 1.43
     },
     {
-      "time": "2026-08-26T14:51:38.8433255Z",
+      "time": "2022-06-12T12:00:00.000Z",
       "city": "Tangier",
       "country": "MA",
       "place": "Tangier",
@@ -407,7 +455,7 @@
       "lng": -5.83
     },
     {
-      "time": "2026-08-26T14:51:38.6862966Z",
+      "time": "2022-06-09T12:00:00.000Z",
       "city": "Casablanca",
       "country": "MA",
       "place": "Casablanca",
@@ -416,53 +464,13 @@
       "lng": -7.59
     },
     {
-      "time": "2026-08-26T14:51:38.2904964Z",
+      "time": "2022-06-03T12:00:00.000Z",
       "city": "Marrakesh",
       "country": "MA",
       "place": "Marrakesh",
       "accuracyKm": 1,
       "lat": 31.63,
       "lng": -8
-    },
-    {
-      "time": "2026-08-26T11:45:17.2546953Z",
-      "country": "UK",
-      "place": "UK",
-      "accuracyKm": 100,
-      "lat": 51,
-      "lng": -3
-    },
-    {
-      "time": "2026-08-25T23:43:39.7728687Z",
-      "country": "UK",
-      "place": "UK",
-      "accuracyKm": 100,
-      "lat": 51,
-      "lng": -3
-    },
-    {
-      "time": "2026-08-25T11:34:12.5030271Z",
-      "country": "UK",
-      "place": "UK",
-      "accuracyKm": 100,
-      "lat": 51,
-      "lng": -3
-    },
-    {
-      "time": "2026-08-24T23:22:55.5111875Z",
-      "country": "UK",
-      "place": "UK",
-      "accuracyKm": 100,
-      "lat": 51,
-      "lng": -3
-    },
-    {
-      "time": "2026-08-24T23:02:23.007985Z",
-      "country": "UK",
-      "place": "UK",
-      "accuracyKm": 100,
-      "lat": 51,
-      "lng": -3
     }
   ]
 }
