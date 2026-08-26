@@ -3,7 +3,7 @@ import { TableClient, TableEntity } from '@azure/data-tables'
 import crypto from 'node:crypto'
 
 type OwnTracksLocation = { _type?: string; lat?: number; lon?: number; tst?: number; acc?: number; tid?: string; batt?: number }
-type LocationEntity = TableEntity & { timestamp: string; latitude: number; longitude: number; accuracy?: number; tracker?: string; battery?: number; city?: string; country?: string }
+type LocationEntity = TableEntity & { eventTimestamp?: string; latitude: number; longitude: number; accuracy?: number; tracker?: string; battery?: number; city?: string; country?: string }
 
 const tableName = process.env.LOCATION_TABLE_NAME || 'LocationPoints'
 const client = TableClient.fromConnectionString(process.env.AzureWebJobsStorage || '', tableName)
@@ -35,17 +35,27 @@ function round100Km(value: number) { return Math.round(value) }
 const duplicateWindowMs = 12 * 60 * 60 * 1000
 const duplicateCoordinateDelta = 0.01
 
+function locationTimestamp(entity: LocationEntity) {
+  if (entity.eventTimestamp) return entity.eventTimestamp
+  const match = entity.rowKey.match(/^(\d{4})(\d{2})(\d{2})(\d{2})(\d{2})(\d{2})(\d{3})-/)
+  return match ? `${match[1]}-${match[2]}-${match[3]}T${match[4]}:${match[5]}:${match[6]}.${match[7]}Z` : undefined
+}
+
 async function latestLocation() {
   let latest: LocationEntity | undefined
   for await (const entity of client.listEntities<LocationEntity>({ queryOptions: { filter: "PartitionKey eq 'location'" } })) {
-    if (!latest || Date.parse(entity.timestamp) > Date.parse(latest.timestamp)) latest = entity
+    const entityTime = locationTimestamp(entity)
+    const latestTime = latest && locationTimestamp(latest)
+    if (entityTime && (!latestTime || Date.parse(entityTime) > Date.parse(latestTime))) latest = entity
   }
   return latest
 }
 
 function isRecentNearbyLocation(location: LocationEntity | undefined, latitude: number, longitude: number) {
   if (!location) return false
-  const age = Date.now() - Date.parse(location.timestamp)
+  const timestamp = locationTimestamp(location)
+  if (!timestamp) return false
+  const age = Date.now() - Date.parse(timestamp)
   const isRecent = age >= 0 && age < duplicateWindowMs
   const isNearby = Math.abs(location.latitude - latitude) <= duplicateCoordinateDelta &&
     Math.abs(location.longitude - longitude) <= duplicateCoordinateDelta
@@ -97,7 +107,7 @@ async function receive(request: HttpRequest, context: InvocationContext): Promis
   const geocode = await reverseGeocode(body.lat!, body.lon!)
   const entity: LocationEntity = {
     partitionKey: 'location', rowKey: `${timestamp.replace(/\D/g, '')}-${crypto.randomUUID()}`,
-    timestamp, latitude: roundKm(body.lat!), longitude: roundKm(body.lon!), accuracy: body.acc, tracker: body.tid, battery: body.batt,
+    eventTimestamp: timestamp, latitude: roundKm(body.lat!), longitude: roundKm(body.lon!), accuracy: body.acc, tracker: body.tid, battery: body.batt,
     city: isUK(geocode.country) ? undefined : geocode.city, country: isUK(geocode.country) ? 'UK' : geocode.country,
   }
   await client.upsertEntity(entity, 'Replace')
@@ -110,8 +120,10 @@ async function exportLocations(request: HttpRequest): Promise<HttpResponseInit> 
   await client.createTable()
   const points: Array<Record<string, unknown>> = []
   for await (const entity of client.listEntities<LocationEntity>()) {
+    const timestamp = locationTimestamp(entity)
+    if (!timestamp) continue
     const isUnitedKingdom = entity.country === 'UK'
-    points.push({ time: entity.timestamp, city: isUnitedKingdom ? undefined : entity.city, country: entity.country, place: isUnitedKingdom ? 'UK' : entity.city || 'adventure', accuracyKm: isUnitedKingdom ? 100 : 1, lat: isUnitedKingdom ? round100Km(entity.latitude) : entity.latitude, lng: isUnitedKingdom ? round100Km(entity.longitude) : entity.longitude })
+    points.push({ time: timestamp, city: isUnitedKingdom ? undefined : entity.city, country: entity.country, place: isUnitedKingdom ? 'UK' : entity.city || 'adventure', accuracyKm: isUnitedKingdom ? 100 : 1, lat: isUnitedKingdom ? round100Km(entity.latitude) : entity.latitude, lng: isUnitedKingdom ? round100Km(entity.longitude) : entity.longitude })
   }
   points.sort((a, b) => String(b.time).localeCompare(String(a.time)))
   return json({ syncedAt: new Date().toISOString(), points: points.map((point) => Object.fromEntries(Object.entries(point).filter(([, value]) => value !== undefined))) })
