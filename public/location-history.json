@@ -1,45 +1,468 @@
 {
-  "syncedAt": "2026-08-26T14:25:39.078Z",
+  "syncedAt": "2026-08-26T14:57:19.634Z",
   "points": [
+    {
+      "time": "2026-08-26T14:51:43.7281575Z",
+      "city": "Parma",
+      "country": "IT",
+      "place": "Parma",
+      "accuracyKm": 1,
+      "lat": 44.8,
+      "lng": 10.33
+    },
+    {
+      "time": "2026-08-26T14:51:43.6275996Z",
+      "city": "Venice Centre",
+      "country": "IT",
+      "place": "Venice Centre",
+      "accuracyKm": 1,
+      "lat": 45.44,
+      "lng": 12.32
+    },
+    {
+      "time": "2026-08-26T14:51:43.5041414Z",
+      "city": "Ljubljana",
+      "country": "SI",
+      "place": "Ljubljana",
+      "accuracyKm": 1,
+      "lat": 46.06,
+      "lng": 14.51
+    },
+    {
+      "time": "2026-08-26T14:51:43.405574Z",
+      "city": "Lienz",
+      "country": "AT",
+      "place": "Lienz",
+      "accuracyKm": 1,
+      "lat": 46.83,
+      "lng": 12.77
+    },
+    {
+      "time": "2026-08-26T14:51:43.3149727Z",
+      "city": "Torri del Benaco",
+      "country": "IT",
+      "place": "Torri del Benaco",
+      "accuracyKm": 1,
+      "lat": 45.6,
+      "lng": 10.65
+    },
+    {
+      "time": "2026-08-26T14:51:43.2213838Z",
+      "city": "La Spezia",
+      "country": "IT",
+      "place": "La Spezia",
+      "accuracyKm": 1,
+      "lat": 44.1,
+      "lng": 9.82
+    },
+    {
+      "time": "2026-08-26T14:51:43.1128602Z",
+      "city": "Beausoleil",
+      "country": "FR",
+      "place": "Beausoleil",
+      "accuracyKm": 1,
+      "lat": 43.74,
+      "lng": 7.42
+    },
+    {
+      "time": "2026-08-26T14:51:42.9794458Z",
+      "city": "Nice",
+      "country": "FR",
+      "place": "Nice",
+      "accuracyKm": 1,
+      "lat": 43.71,
+      "lng": 7.26
+    },
+    {
+      "time": "2026-08-26T14:51:42.8649484Z",
+      "city": "Clermont-Ferrand",
+      "country": "FR",
+      "place": "Clermont-Ferrand",
+      "accuracyKm": 1,
+      "lat": 45.78,
+      "lng": 3.09
+    },
+    {
+      "time": "2026-08-26T14:51:42.7514466Z",
+      "city": "Paris",
+      "country": "FR",
+      "place": "Paris",
+      "accuracyKm": 1,
+      "lat": 48.86,
+      "lng": 2.35
+    },
+    {
+      "time": "2026-08-26T14:51:42.651988Z",
+      "city": "Johannesburg",
+      "country": "ZA",
+      "place": "Johannesburg",
+      "accuracyKm": 1,
+      "lat": -26.2,
+      "lng": 28.05
+    },
+    {
+      "time": "2026-08-26T14:51:42.5504341Z",
+      "city": "Gqeberha",
+      "country": "ZA",
+      "place": "Gqeberha",
+      "accuracyKm": 1,
+      "lat": -33.96,
+      "lng": 25.6
+    },
+    {
+      "time": "2026-08-26T14:51:42.4598319Z",
+      "city": "Cape Town",
+      "country": "ZA",
+      "place": "Cape Town",
+      "accuracyKm": 1,
+      "lat": -33.92,
+      "lng": 18.42
+    },
+    {
+      "time": "2026-08-26T14:51:42.3463307Z",
+      "city": "Santa Cruz de Tenerife",
+      "country": "ES",
+      "place": "Santa Cruz de Tenerife",
+      "accuracyKm": 1,
+      "lat": 28.46,
+      "lng": -16.25
+    },
+    {
+      "time": "2026-08-26T14:51:42.2417896Z",
+      "city": "Reykjavík",
+      "country": "IS",
+      "place": "Reykjavík",
+      "accuracyKm": 1,
+      "lat": 64.15,
+      "lng": -21.94
+    },
+    {
+      "time": "2026-08-26T14:51:42.1312742Z",
+      "city": "Antalya",
+      "country": "TR",
+      "place": "Antalya",
+      "accuracyKm": 1,
+      "lat": 36.9,
+      "lng": 30.7
+    },
+    {
+      "time": "2026-08-26T14:51:42.0117999Z",
+      "city": "Brussels",
+      "country": "BE",
+      "place": "Brussels",
+      "accuracyKm": 1,
+      "lat": 50.85,
+      "lng": 4.35
+    },
+    {
+      "time": "2026-08-26T14:51:41.90029Z",
+      "city": "Luxembourg",
+      "country": "LU",
+      "place": "Luxembourg",
+      "accuracyKm": 1,
+      "lat": 49.61,
+      "lng": 6.13
+    },
+    {
+      "time": "2026-08-26T14:51:41.7838009Z",
+      "city": "Stuttgart",
+      "country": "DE",
+      "place": "Stuttgart",
+      "accuracyKm": 1,
+      "lat": 48.78,
+      "lng": 9.18
+    },
+    {
+      "time": "2026-08-26T14:51:41.6882213Z",
+      "city": "Unterseen",
+      "country": "CH",
+      "place": "Unterseen",
+      "accuracyKm": 1,
+      "lat": 46.69,
+      "lng": 7.86
+    },
+    {
+      "time": "2026-08-26T14:51:41.5926404Z",
+      "city": "Paris",
+      "country": "FR",
+      "place": "Paris",
+      "accuracyKm": 1,
+      "lat": 48.86,
+      "lng": 2.35
+    },
+    {
+      "time": "2026-08-26T14:51:41.502038Z",
+      "city": "Caen",
+      "country": "FR",
+      "place": "Caen",
+      "accuracyKm": 1,
+      "lat": 49.18,
+      "lng": -0.37
+    },
+    {
+      "time": "2026-08-26T14:51:41.3882158Z",
+      "city": "Berlin",
+      "country": "DE",
+      "place": "Berlin",
+      "accuracyKm": 1,
+      "lat": 52.52,
+      "lng": 13.41
+    },
+    {
+      "time": "2026-08-26T14:51:41.2950935Z",
+      "city": "Lagos",
+      "country": "NG",
+      "place": "Lagos",
+      "accuracyKm": 1,
+      "lat": 6.52,
+      "lng": 3.38
+    },
+    {
+      "time": "2026-08-26T14:51:41.1855745Z",
+      "city": "Hoàn Kiếm",
+      "country": "VN",
+      "place": "Hoàn Kiếm",
+      "accuracyKm": 1,
+      "lat": 21.03,
+      "lng": 105.85
+    },
+    {
+      "time": "2026-08-26T14:51:41.0710774Z",
+      "city": "Tokyo",
+      "country": "JP",
+      "place": "Tokyo",
+      "accuracyKm": 1,
+      "lat": 35.68,
+      "lng": 139.69
+    },
+    {
+      "time": "2026-08-26T14:51:40.9804751Z",
+      "city": "Osaka",
+      "country": "JP",
+      "place": "Osaka",
+      "accuracyKm": 1,
+      "lat": 34.69,
+      "lng": 135.5
+    },
+    {
+      "time": "2026-08-26T14:51:40.8789222Z",
+      "city": "Fukuoka",
+      "country": "JP",
+      "place": "Fukuoka",
+      "accuracyKm": 1,
+      "lat": 33.59,
+      "lng": 130.4
+    },
+    {
+      "time": "2026-08-26T14:51:40.7664152Z",
+      "city": "Hong Kong",
+      "country": "HK",
+      "place": "Hong Kong",
+      "accuracyKm": 1,
+      "lat": 22.32,
+      "lng": 114.17
+    },
+    {
+      "time": "2026-08-26T14:51:40.6559008Z",
+      "city": "Zakopane",
+      "country": "PL",
+      "place": "Zakopane",
+      "accuracyKm": 1,
+      "lat": 49.3,
+      "lng": 19.95
+    },
+    {
+      "time": "2026-08-26T14:51:40.5493686Z",
+      "city": "Krabi",
+      "country": "TH",
+      "place": "Krabi",
+      "accuracyKm": 1,
+      "lat": 7.74,
+      "lng": 98.78
+    },
+    {
+      "time": "2026-08-26T14:51:40.4219282Z",
+      "city": "Chiang Mai",
+      "country": "TH",
+      "place": "Chiang Mai",
+      "accuracyKm": 1,
+      "lat": 18.79,
+      "lng": 98.99
+    },
+    {
+      "time": "2026-08-26T14:51:40.3263479Z",
+      "city": "Bangkok",
+      "country": "TH",
+      "place": "Bangkok",
+      "accuracyKm": 1,
+      "lat": 13.76,
+      "lng": 100.5
+    },
+    {
+      "time": "2026-08-26T14:51:40.2178244Z",
+      "city": "Split",
+      "country": "HR",
+      "place": "Split",
+      "accuracyKm": 1,
+      "lat": 43.51,
+      "lng": 16.44
+    },
+    {
+      "time": "2026-08-26T14:51:40.092376Z",
+      "city": "Barcelona",
+      "country": "ES",
+      "place": "Barcelona",
+      "accuracyKm": 1,
+      "lat": 41.39,
+      "lng": 2.17
+    },
+    {
+      "time": "2026-08-26T14:51:39.9663914Z",
+      "city": "Perpignan",
+      "country": "FR",
+      "place": "Perpignan",
+      "accuracyKm": 1,
+      "lat": 42.69,
+      "lng": 2.89
+    },
+    {
+      "time": "2026-08-26T14:51:39.8489078Z",
+      "city": "Dortmund",
+      "country": "DE",
+      "place": "Dortmund",
+      "accuracyKm": 1,
+      "lat": 51.51,
+      "lng": 7.47
+    },
+    {
+      "time": "2026-08-26T14:51:39.7493443Z",
+      "city": "Eivissa",
+      "country": "ES",
+      "place": "Eivissa",
+      "accuracyKm": 1,
+      "lat": 38.91,
+      "lng": 1.43
+    },
+    {
+      "time": "2026-08-26T14:51:39.6149344Z",
+      "city": "Santander",
+      "country": "ES",
+      "place": "Santander",
+      "accuracyKm": 1,
+      "lat": 43.46,
+      "lng": -3.81
+    },
+    {
+      "time": "2026-08-26T14:51:39.5074071Z",
+      "city": "Luxor Qesm",
+      "country": "EG",
+      "place": "Luxor Qesm",
+      "accuracyKm": 1,
+      "lat": 25.69,
+      "lng": 32.64
+    },
+    {
+      "time": "2026-08-26T14:51:39.3839489Z",
+      "city": "Qesm Abdeen",
+      "country": "EG",
+      "place": "Qesm Abdeen",
+      "accuracyKm": 1,
+      "lat": 30.04,
+      "lng": 31.24
+    },
+    {
+      "time": "2026-08-26T14:51:39.1927886Z",
+      "city": "Berlin",
+      "country": "DE",
+      "place": "Berlin",
+      "accuracyKm": 1,
+      "lat": 52.52,
+      "lng": 13.41
+    },
+    {
+      "time": "2026-08-26T14:51:39.0942211Z",
+      "city": "Amsterdam",
+      "country": "NL",
+      "place": "Amsterdam",
+      "accuracyKm": 1,
+      "lat": 52.37,
+      "lng": 4.9
+    },
+    {
+      "time": "2026-08-26T14:51:38.9737495Z",
+      "city": "Eivissa",
+      "country": "ES",
+      "place": "Eivissa",
+      "accuracyKm": 1,
+      "lat": 38.91,
+      "lng": 1.43
+    },
+    {
+      "time": "2026-08-26T14:51:38.8433255Z",
+      "city": "Tangier",
+      "country": "MA",
+      "place": "Tangier",
+      "accuracyKm": 1,
+      "lat": 35.76,
+      "lng": -5.83
+    },
+    {
+      "time": "2026-08-26T14:51:38.6862966Z",
+      "city": "Casablanca",
+      "country": "MA",
+      "place": "Casablanca",
+      "accuracyKm": 1,
+      "lat": 33.57,
+      "lng": -7.59
+    },
+    {
+      "time": "2026-08-26T14:51:38.2904964Z",
+      "city": "Marrakesh",
+      "country": "MA",
+      "place": "Marrakesh",
+      "accuracyKm": 1,
+      "lat": 31.63,
+      "lng": -8
+    },
     {
       "time": "2026-08-26T11:45:17.2546953Z",
       "country": "UK",
       "place": "UK",
-      "accuracyKm": 1,
-      "lat": 51.47,
-      "lng": -2.58
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
     },
     {
       "time": "2026-08-25T23:43:39.7728687Z",
       "country": "UK",
       "place": "UK",
-      "accuracyKm": 1,
-      "lat": 51.47,
-      "lng": -2.58
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
     },
     {
       "time": "2026-08-25T11:34:12.5030271Z",
       "country": "UK",
       "place": "UK",
-      "accuracyKm": 1,
-      "lat": 51.47,
-      "lng": -2.58
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
     },
     {
       "time": "2026-08-24T23:22:55.5111875Z",
       "country": "UK",
       "place": "UK",
-      "accuracyKm": 1,
-      "lat": 51.47,
-      "lng": -2.58
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
     },
     {
       "time": "2026-08-24T23:02:23.007985Z",
       "country": "UK",
       "place": "UK",
-      "accuracyKm": 1,
-      "lat": 51.47,
-      "lng": -2.58
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
     }
   ]
 }
