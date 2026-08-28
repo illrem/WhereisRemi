@@ -50,6 +50,14 @@ async function latestLocation() {
   return latest
 }
 
+// Serializes writes so concurrent OwnTracks requests can't both pass the duplicate check before either one commits.
+let writeQueue: Promise<unknown> = Promise.resolve()
+function serialized<T>(task: () => Promise<T>): Promise<T> {
+  const result = writeQueue.then(task, task)
+  writeQueue = result.then(() => undefined, () => undefined)
+  return result
+}
+
 function isSameDayNearbyLocation(location: LocationEntity | undefined, latitude: number, longitude: number) {
   if (!location) return false
   const timestamp = locationTimestamp(location)
@@ -97,20 +105,22 @@ async function receive(request: HttpRequest, context: InvocationContext): Promis
   }
   if (!Number.isFinite(body.lat) || !Number.isFinite(body.lon)) return json({ error: 'lat and lon are required.' }, 400)
   await client.createTable()
-  if (isSameDayNearbyLocation(await latestLocation(), body.lat!, body.lon!)) {
-    context.log('Ignoring recent nearby OwnTracks location.')
+  return serialized(async () => {
+    if (isSameDayNearbyLocation(await latestLocation(), body.lat!, body.lon!)) {
+      context.log('Ignoring recent nearby OwnTracks location.')
+      return json([], 200)
+    }
+    const timestamp = new Date((body.tst || Math.floor(Date.now() / 1000)) * 1000).toISOString()
+    const geocode = await reverseGeocode(body.lat!, body.lon!)
+    const entity: LocationEntity = {
+      partitionKey: 'location', rowKey: `${timestamp.replace(/\D/g, '')}-${crypto.randomUUID()}`,
+      eventTimestamp: timestamp, latitude: roundKm(body.lat!), longitude: roundKm(body.lon!), accuracy: body.acc, tracker: body.tid, battery: body.batt,
+      city: isUK(geocode.country) ? undefined : geocode.city, country: isUK(geocode.country) ? 'UK' : geocode.country,
+    }
+    await client.upsertEntity(entity, 'Replace')
+    context.log(`Stored OwnTracks point ${timestamp}`)
     return json([], 200)
-  }
-  const timestamp = new Date((body.tst || Math.floor(Date.now() / 1000)) * 1000).toISOString()
-  const geocode = await reverseGeocode(body.lat!, body.lon!)
-  const entity: LocationEntity = {
-    partitionKey: 'location', rowKey: `${timestamp.replace(/\D/g, '')}-${crypto.randomUUID()}`,
-    eventTimestamp: timestamp, latitude: roundKm(body.lat!), longitude: roundKm(body.lon!), accuracy: body.acc, tracker: body.tid, battery: body.batt,
-    city: isUK(geocode.country) ? undefined : geocode.city, country: isUK(geocode.country) ? 'UK' : geocode.country,
-  }
-  await client.upsertEntity(entity, 'Replace')
-  context.log(`Stored OwnTracks point ${timestamp}`)
-  return json([], 200)
+  })
 }
 
 async function exportLocations(request: HttpRequest): Promise<HttpResponseInit> {
