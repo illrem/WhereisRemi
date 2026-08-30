@@ -1,6 +1,14 @@
 {
-  "syncedAt": "2026-08-30T04:09:09.331Z",
+  "syncedAt": "2026-08-30T11:26:26.185Z",
   "points": [
+    {
+      "time": "2026-08-30T10:12:10.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 52,
+      "lng": -2
+    },
     {
       "time": "2026-08-28T20:39:55.000Z",
       "country": "UK",
