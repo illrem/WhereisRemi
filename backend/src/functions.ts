@@ -50,11 +50,11 @@ async function latestLocation() {
   return latest
 }
 
-function isSameDayNearbyLocation(location: LocationEntity | undefined, latitude: number, longitude: number) {
+function isSameDayNearbyLocation(location: LocationEntity | undefined, newTimestamp: string, latitude: number, longitude: number) {
   if (!location) return false
   const timestamp = locationTimestamp(location)
   if (!timestamp) return false
-  const isSameDay = timestamp.slice(0, 10) === new Date().toISOString().slice(0, 10)
+  const isSameDay = timestamp.slice(0, 10) === newTimestamp.slice(0, 10)
   const isNearby = Math.abs(location.latitude - latitude) <= duplicateCoordinateDelta &&
     Math.abs(location.longitude - longitude) <= duplicateCoordinateDelta
   return isSameDay && isNearby
@@ -97,11 +97,11 @@ async function receive(request: HttpRequest, context: InvocationContext): Promis
   }
   if (!Number.isFinite(body.lat) || !Number.isFinite(body.lon)) return json({ error: 'lat and lon are required.' }, 400)
   await client.createTable()
-  if (isSameDayNearbyLocation(await latestLocation(), body.lat!, body.lon!)) {
+  const timestamp = new Date((body.tst || Math.floor(Date.now() / 1000)) * 1000).toISOString()
+  if (isSameDayNearbyLocation(await latestLocation(), timestamp, body.lat!, body.lon!)) {
     context.log('Ignoring recent nearby OwnTracks location.')
     return json([], 200)
   }
-  const timestamp = new Date((body.tst || Math.floor(Date.now() / 1000)) * 1000).toISOString()
   const geocode = await reverseGeocode(body.lat!, body.lon!)
   const entity: LocationEntity = {
     partitionKey: 'location', rowKey: `${timestamp.replace(/\D/g, '')}-${crypto.randomUUID()}`,
