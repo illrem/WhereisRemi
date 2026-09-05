@@ -1,6 +1,94 @@
 {
-  "syncedAt": "2026-09-05T10:06:04.252Z",
+  "syncedAt": "2026-09-05T14:44:44.403Z",
   "points": [
+    {
+      "time": "2026-09-05T12:57:32.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 50,
+      "lng": -4
+    },
+    {
+      "time": "2026-09-05T12:31:58.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 50,
+      "lng": -4
+    },
+    {
+      "time": "2026-09-05T12:06:59.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -4
+    },
+    {
+      "time": "2026-09-05T11:55:30.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -4
+    },
+    {
+      "time": "2026-09-05T11:45:12.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
+    },
+    {
+      "time": "2026-09-05T11:18:47.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
+    },
+    {
+      "time": "2026-09-05T11:09:00.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
+    },
+    {
+      "time": "2026-09-05T10:59:20.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
+    },
+    {
+      "time": "2026-09-05T10:49:33.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
+    },
+    {
+      "time": "2026-09-05T10:39:30.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
+    },
+    {
+      "time": "2026-09-05T10:27:24.000Z",
+      "country": "UK",
+      "place": "UK",
+      "accuracyKm": 100,
+      "lat": 51,
+      "lng": -3
+    },
     {
       "time": "2026-09-04T00:04:18.000Z",
       "country": "UK",
