@@ -1,6 +1,15 @@
 {
-  "syncedAt": "2026-09-22T03:45:46.257Z",
+  "syncedAt": "2026-09-22T11:07:08.689Z",
   "points": [
+    {
+      "time": "2026-09-22T07:27:23.000Z",
+      "city": "Madrid",
+      "country": "ES",
+      "place": "Madrid",
+      "accuracyKm": 1,
+      "lat": 40.43,
+      "lng": -3.7
+    },
     {
       "time": "2026-09-21T18:40:18.000Z",
       "city": "Brihuega",
